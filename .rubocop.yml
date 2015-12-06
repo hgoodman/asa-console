@@ -1,0 +1,71 @@
+---
+
+Lint/HandleExceptions:
+  Exclude:
+    - Rakefile
+
+Lint/NestedMethodDefinition:
+  Exclude:
+    - lib/asa_console/terminal/fake_ssh.rb
+    - script/*
+
+Lint/NonLocalExitFromIterator:
+  Exclude:
+    - lib/asa_console/terminal/ssh.rb
+
+Lint/RescueException:
+  Exclude:
+    - lib/asa_console/test/script.rb
+
+Metrics/AbcSize:
+  Max: 25
+  Exclude:
+    - lib/asa_console/terminal/fake_ssh.rb
+    - script/*
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/LineLength:
+  Max: 110
+
+Metrics/MethodLength:
+  Max: 35
+  Exclude:
+    - lib/asa_console/terminal/fake_ssh.rb
+    - script/*
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Style/ClassVars:
+  Exclude:
+    - lib/asa_console/test.rb
+
+Style/EmptyLinesAroundBlockBody:
+  Exclude:
+    - spec/*_spec.rb
+
+Style/EmptyLinesAroundMethodBody:
+  Exclude:
+    - lib/asa_console/terminal/fake_ssh.rb
+
+Style/EmptyLineBetweenDefs:
+  Exclude:
+    - lib/asa_console/terminal/fake_ssh.rb
+
+Style/FormatString:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/SpaceInsideBrackets:
+  Enabled: false
+
+Style/StringLiterals:
+  Exclude:
+    - script/*

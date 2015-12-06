@@ -1,0 +1,113 @@
+#!/bin/env ruby
+
+require 'yaml'
+require 'getoptlong'
+require 'highline/import'
+require 'asa_console/test'
+
+DEFAULT_OPTION_FILE = File.join(Dir.home, '.asa-console', 'test_options.yaml')
+DEFAULT_APPLIANCE_FILE = File.join(Dir.home, '.asa-console', 'test_appliances.yaml')
+DEFAULT_COLOR = :dark
+
+def usage
+  puts %(
+  Usage:
+    #{$PROGRAM_NAME} [options] <testname> [asaname]
+
+  Options:
+    -h, --help                    Display this message
+    -f, --file                    Interpret <testname> as an explicit file name
+    -o, --option-file <file>      YAML file with command line defaults for this utility
+    -a, --appliance-file <file>   YAML file with ASA device list and terminal options
+    -s, --show-session-log        Include the full session log in the command output
+    -c, --color (light|dark|off)  Colorize output using light or dark colors
+
+  Defaults:
+    --option-file     #{DEFAULT_OPTION_FILE}
+    --appliance-file  #{DEFAULT_APPLIANCE_FILE}
+    --color           #{DEFAULT_COLOR}
+
+  Available Tests:
+    #{ASAConsole::Test.test_names.join("\n    ")}
+  ).gsub(/^  /, '')
+  puts
+  exit 1
+end
+
+cli_opts = {}
+
+begin
+  cli = GetoptLong.new(
+    [ '--help',             '-h', GetoptLong::NO_ARGUMENT ],
+    [ '--file',             '-f', GetoptLong::NO_ARGUMENT ],
+    [ '--option-file',      '-o', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--appliance-file',   '-a', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--show-session-log', '-s', GetoptLong::NO_ARGUMENT ],
+    [ '--color',            '-c', GetoptLong::REQUIRED_ARGUMENT ]
+  )
+  cli.each do |opt, arg|
+    cli_opts[opt.sub(/^--/, '')] = (arg == '' ? true : arg)
+  end
+rescue GetoptLong::MissingArgument
+  usage
+end
+
+help = false
+is_file = false
+option_file = DEFAULT_OPTION_FILE
+appliance_file = DEFAULT_APPLIANCE_FILE
+show_session_log = false
+color = DEFAULT_COLOR
+
+option_file = cli_opts['option-file'] if cli_opts['option-file']
+if File.readable? option_file
+  cli_opts = YAML.load_file(option_file).merge(cli_opts)
+end
+
+cli_opts.each do |opt, arg|
+  case opt
+  when 'help'             then  help = arg
+  when 'file'             then  is_file = arg
+  when 'appliance-file'   then  appliance_file = arg
+  when 'show-session-log' then  show_session_log = arg
+  when 'color'            then  color = arg.to_sym
+  end
+end
+
+test_name = ARGV.shift if ARGV.length > 0
+asa_name = ARGV.shift if ARGV.length > 0
+
+ASAConsole::Test.color_scheme = color
+
+enable_password = nil
+
+if File.readable? appliance_file
+  config = YAML.load_file(appliance_file)
+  asa_name ||= config['default_appliance']
+  if asa_name
+    if config['appliances'][asa_name].is_a?(Hash)
+      terminal_opts = config['appliances'][asa_name]['terminal_opts']
+      enable_password = config['appliances'][asa_name]['enable_password']
+    else
+      puts "Error: Configuration missing for #{asa_name.dump}"
+      exit 1
+    end
+  end
+end
+
+usage if help || test_name.nil?
+
+test_file = is_file ? File.expand_path(test_name) : ASAConsole::Test.test_path(test_name)
+
+terminal_opts ||= {}
+terminal_opts.keys.each { |key| terminal_opts[key.to_sym] = terminal_opts.delete(key) }
+terminal_opts[:host] = ask 'Host Name: ' unless terminal_opts[:host]
+terminal_opts[:user] = ask 'User Name: ' unless terminal_opts[:user]
+terminal_opts[:password] = ask('Password: ') { |q| q.echo = '*' } unless terminal_opts[:password]
+
+unless enable_password
+  pw = ask('Enable Password [ENTER for none]: ') { |q| q.echo = '*' }
+  enable_password = pw if pw.length > 0
+end
+
+exit 1 unless ASAConsole::Test.start(test_file, terminal_opts, enable_password, show_session_log)
