@@ -7,7 +7,7 @@
 ASAConsole::Test.script do |asa|
   asa.connect
 
-  log "Local time is #{Time.now}"
+  log "Local time is #{Time.now.getlocal}"
 
   time = ASAConsole::Util.parse_cisco_time(asa.show('clock')) do |t, tz|
     log "Remote time (not adjusted for timezone) is #{t}"
@@ -30,7 +30,7 @@ ASAConsole::Test.script do |asa|
 
     log "UTC offset is #{offset}"
 
-    t - (offset * 3600) + Time.now.gmt_offset
+    t.getlocal - (offset * 3600)
   end
 
   log "Remote time (adjusted to the local timezone) is #{time}"

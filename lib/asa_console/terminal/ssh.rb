@@ -100,7 +100,7 @@ class ASAConsole
               @connected = true
               @channel = ch
               @channel.on_data do |_ch, data|
-                @last_output_received = Time.now
+                @last_output_received = Time.now.getlocal
                 @raw_session_log << data
                 @raw_buffer << data
               end
@@ -191,12 +191,12 @@ class ASAConsole
       protected :buffer
 
       def expect(prompt_regex)
-        @last_output_received = Time.now
+        @last_output_received = Time.now.getlocal
 
         while buffer !~ prompt_regex
           begin
             @channel.connection.process(0.1)
-            break if Time.now - @last_output_received > @command_timeout
+            break if Time.now.getlocal - @last_output_received > @command_timeout
           rescue Net::SSH::Disconnect, IOError
             @connected = false
             break

@@ -22,8 +22,9 @@ RSpec.describe ASAConsole::Util do
     str = '16:04:31.458 PDT Thu Aug 6 2015'
     context "result from parsing #{str.dump}" do
       time = ASAConsole::Util.parse_cisco_time(str)
-      it 'is a Time object' do
+      it 'is a Time object represented in UTC' do
         expect(time).to be_a Time
+        expect(time.utc?).to be true
       end
       it 'has the correct year, month and day' do
         expect(time.year).to eq 2015
@@ -50,8 +51,9 @@ RSpec.describe ASAConsole::Util do
     str = '18:55:05.551 GMT/BDT Mon May 11 2015'
     context "result from parsing #{str.dump}" do
       time = ASAConsole::Util.parse_cisco_time(str)
-      it 'is a Time object' do
+      it 'is a Time object represented in UTC' do
         expect(time).to be_a Time
+        expect(time.utc?).to be true
       end
       it 'has the correct year, month and day' do
         expect(time.year).to eq 2015
@@ -78,8 +80,9 @@ RSpec.describe ASAConsole::Util do
     str = "Configuration last modified by enable_1 at 16:23:03.599 EDT Fri Jul 17 2015\n"
     context "result from parsing #{str.dump}" do
       time = ASAConsole::Util.parse_cisco_time(str)
-      it 'is a Time object' do
+      it 'is a Time object represented in UTC' do
         expect(time).to be_a Time
+        expect(time.utc?).to be true
       end
       it 'is 16:23 on a Friday' do
         expect(time.hour).to eq 16
@@ -91,8 +94,9 @@ RSpec.describe ASAConsole::Util do
     str = "Last Failover at: 21:08:43 EST Jan 3 2015\n"
     context "result from parsing #{str.dump}" do
       time = ASAConsole::Util.parse_cisco_time(str)
-      it 'is a Time object' do
+      it 'is a Time object represented in UTC' do
         expect(time).to be_a Time
+        expect(time.utc?).to be true
       end
       iso8601 = '2015-01-03 21:08:43'
       it "evaluates to #{iso8601.dump}" do
@@ -102,7 +106,7 @@ RSpec.describe ASAConsole::Util do
 
     context 'with a block given' do
       before :context do
-        @expected_result = Time.now
+        @expected_result = Time.now.getutc
         @result = ASAConsole::Util.parse_cisco_time('22:50:27.287 UTC Sun Jun 28 2015') do |t, tz|
           @time = t
           @timezone = tz

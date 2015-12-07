@@ -64,16 +64,16 @@ class ASAConsole
     #
     # @note
     #   It is not possible to reliably evaluate the timezone string without
-    #   without running additional commands. See {file:script/test_clock.rb} for
-    #   one method of adjusting a remote timestamp to local time using "show
-    #   clock" commands.
+    #   running additional commands, so this function (optimistically) returns
+    #   a UTC timestamp. See {file:script/test_clock.rb} for one method of
+    #   adjusting a remote timestamp to local time using "show clock" commands.
     #
     # @param str [String]
     # @yieldparam time [Time]
     # @yieldparam tz [String]
     #   timezone string set by "clock timezone" or "clock summer-time"
     # @return [Time]
-    #   time represented in the local timezone
+    #   time represented in UTC
     def self.parse_cisco_time(str)
       m = CISCO_TIME_REGEX.match(str)
       return nil unless m
@@ -85,7 +85,7 @@ class ASAConsole
       min     = m[:min].to_i
       sec     = m[:sec].to_i
       subsec  = "0.#{m[:subsec]}".to_f
-      time = Time.new(year, month, day, hour, min, sec) + subsec
+      time = Time.utc(year, month, day, hour, min, sec) + subsec
       time = yield(time, tz) if block_given?
       time
     end

@@ -128,7 +128,7 @@ class ASAConsole
             @prompt = prompt
             @terminal.session.close if disconnect
             @input_buffer = ''
-            @terminal.last_output_received = Time.now
+            @terminal.last_output_received = Time.now.getlocal
           end
         end.new(self)
 

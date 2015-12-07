@@ -1,6 +1,4 @@
 
-require 'asa_console/test'
-
 class ASAConsole
   module Test
     #
