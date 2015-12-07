@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'asa_console'
-  s.version     = '0.1.0'
+  s.version     = '0.1.1'
   s.summary     = 'Cisco ASA management via an interactive terminal session'
   s.description = 'This gem lets a program interact with a Cisco ASA using CLI
   commands. It includes a minimal set of functions for issuing commands and
@@ -10,7 +10,8 @@ Gem::Specification.new do |s|
   s.email       = 'github@henrygoodman.com'
   s.homepage    = 'https://github.com/hgoodman/asa-console/'
   s.license     = 'MIT'
-  s.files       = Dir[__FILE__, 'lib/**/*', 'script/*']
+  s.has_rdoc    = 'yard'
+  s.files       = Dir[__FILE__, 'lib/**/*', 'script/*', '*.md', '.yardopts']
   s.executables = ['asatest']
 
   s.add_runtime_dependency('net-ssh', '~> 2.9.2')
