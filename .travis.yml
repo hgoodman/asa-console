@@ -1,0 +1,11 @@
+---
+language: ruby
+rvm:
+  - '1.9.3'
+  - '2.0.0'
+gemfile:
+  - gemfiles/travis.gemfile
+script:
+  - bundle exec rake rubocop
+  - bundle exec rake spec
+  - bundle exec rake yardoc
