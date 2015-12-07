@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rspec',     '~> 3.4')
   s.add_development_dependency('rubocop',   '~> 0.35.1')
   s.add_development_dependency('simplecov', '~> 0.10')
+  s.add_development_dependency('thor',      '~> 0.17')
   s.add_development_dependency('yard',      '~> 0.8')
 
   s.required_ruby_version = '>=1.9.3'

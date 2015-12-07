@@ -12,7 +12,7 @@ Caveats
 >
 > -- <cite>The Black Keys, "Sinister Kid"</cite>
 
-Most people will better off using [Cisco's official REST API](http://www.cisco.com/c/en/us/td/docs/security/asa/api/qsg-asa-api.html) plugin for the ASA platform. This gem does not use the supported API. It was developed as an academic pursuit and may not be suitable for your environment. It is distributed under the [MIT License](LICENSE.md), which is to say that it comes with no warranty of any kind.
+Most people would be better off using [Cisco's official REST API](http://www.cisco.com/c/en/us/td/docs/security/asa/api/qsg-asa-api.html) plugin for the ASA platform. This gem does not use the supported API. It was developed as an academic pursuit and may not be suitable for your environment. It is distributed under the [MIT License](LICENSE.md), which is to say that it comes with no warranty of any kind.
 
 That being said, you might find it useful if you are working with older hardware or if you have other special requirements. The official REST API plugin is only supported on 5500-X, ASAv and newer platforms.
 
@@ -104,6 +104,8 @@ The enable password can be omitted if it is the same as the terminal password or
 
 API Documentation
 =================
+
+http://www.rubydoc.info/github/hgoodman/asa-console/
 
 To generate YARD docs run:
 

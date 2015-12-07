@@ -1,5 +1,14 @@
 
 require 'simplecov'
+begin
+  require 'codeclimate-test-reporter'
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    CodeClimate::TestReporter::Formatter
+  ]
+rescue LoadError
+  SimpleCov.formatters = [SimpleCov::Formatter::HTMLFormatter]
+end
 SimpleCov.start
 
 RSpec.configure do |config|
