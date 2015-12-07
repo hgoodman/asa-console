@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/hgoodman/asa-console.svg?branch=master)](https://travis-ci.org/hgoodman/asa-console)
 [![Code Climate](https://codeclimate.com/github/hgoodman/asa-console/badges/gpa.svg)](https://codeclimate.com/github/hgoodman/asa-console)
 [![Test Coverage](https://codeclimate.com/github/hgoodman/asa-console/badges/coverage.svg)](https://codeclimate.com/github/hgoodman/asa-console/coverage)
+[![Gem Version](https://badge.fury.io/rb/asa_console.svg)](https://badge.fury.io/rb/asa_console)
 [![YARD Docs](https://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/github/hgoodman/asa-console/)
 
 ASAConsole
