@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'asa_console'
-  s.version     = '0.0.0'
+  s.version     = '0.1.0'
   s.summary     = 'Cisco ASA management via an interactive terminal session'
   s.description = 'This gem lets a program interact with a Cisco ASA using CLI
   commands. It includes a minimal set of functions for issuing commands and
