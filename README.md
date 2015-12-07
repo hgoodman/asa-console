@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/hgoodman/asa-console.svg?branch=master)](https://travis-ci.org/hgoodman/asa-console)
+[![Code Climate](https://codeclimate.com/github/hgoodman/asa-console/badges/gpa.svg)](https://codeclimate.com/github/hgoodman/asa-console)
+[![Test Coverage](https://codeclimate.com/github/hgoodman/asa-console/badges/coverage.svg)](https://codeclimate.com/github/hgoodman/asa-console/coverage)
+[![YARD Docs](https://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/github/hgoodman/asa-console/)
+
 ASAConsole
 ==========
 
@@ -105,12 +110,10 @@ The enable password can be omitted if it is the same as the terminal password or
 API Documentation
 =================
 
-http://www.rubydoc.info/github/hgoodman/asa-console/
-
-To generate YARD docs run:
+You can view online documentation at [rubydoc.info](http://www.rubydoc.info/github/hgoodman/asa-console/) or generate it yourself with:
 
     rake yardoc
 
-To also document objects used for testing:
+To include documentation for objects used in testing and development:
 
     rake yardoc_dev
