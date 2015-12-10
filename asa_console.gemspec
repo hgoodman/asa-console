@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('highline', '~> 1.7')
 
   s.add_development_dependency('bundler',   '~> 1.7')
+  s.add_development_dependency('kramdown',  '~> 1.9')
   s.add_development_dependency('rake',      '~> 10.4')
-  s.add_development_dependency('redcarpet', '~> 3.3')
   s.add_development_dependency('rspec',     '~> 3.4')
   s.add_development_dependency('rubocop',   '~> 0.35')
   s.add_development_dependency('simplecov', '~> 0.11')

@@ -27,7 +27,7 @@ The easiest way to get started is to browse through the test files in the [scrip
 
 Each script executes a series of commands declared in a block as show below. The test runner displays output as it would appear in an SSH session and adds color to indicate how the output is being parsed. Informational messages can be added to the output with the `log` method.
 
-```ruby
+~~~ ruby
 ASAConsole::Test.script do |asa|
   log 'Connecting...'
   asa.connect
@@ -39,7 +39,7 @@ ASAConsole::Test.script do |asa|
   log 'Disconnecting...'
   asa.disconnect
 end
-```
+~~~
 
 The included test scripts are designed to be non-invasive and to leave the device configuration in its original state. Nevertheless, running them in a production environment is not recommended.
 
@@ -69,17 +69,17 @@ Configuration Files
 
 The `asatest` executable will read a list of default command line options from the file `~/.asa-console/test_options.yaml`. Here is an example of the file format:
 
-```yaml
+~~~ yaml
 ---
 show-session-log: true
 color: light
-```
+~~~
 
 Each key matches a long-form command line option with the leading "--" removed. Run the program with "--help" for a complete list.
 
 Device information is needed for running live tests. By default, the program will look for appliance information in `~/.asa-console/test_appliances.yaml`. Here is an example of the file format:
 
-```yaml
+~~~ yaml
 ---
 default_appliance: firewall002
 appliances:
@@ -93,7 +93,7 @@ appliances:
       user: testuser
       password: execpass
     enable_password: enablepass
-```
+~~~
 
 If any of the following options are not found in this file, the user will be prompted to enter values for them.
 
