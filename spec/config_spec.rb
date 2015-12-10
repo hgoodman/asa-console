@@ -141,6 +141,25 @@ RSpec.describe ASAConsole::Config do
       expect(records.include? 'skinny').to be true
       expect(records.include? 'dns').to be true
     end
+    context 'when selecting a nested record with no key string' do
+      before :example do
+        @object_group = @rc.select('object-group network LAN-Hosts')
+      end
+      it 'works without a name' do
+        first_line = @object_group.select(nil)
+        expect(first_line.keystr).to be_nil
+        expect(first_line.config_name).to be_nil
+        expect(first_line.config_data).to eq 'network-object host LANHost'
+        expect(first_line.line).to eq 'network-object host LANHost'
+      end
+      it 'works with a name' do
+        first_line = @object_group.select(nil, 'network-object')
+        expect(first_line.keystr).to be_nil
+        expect(first_line.config_name).to eq 'network-object'
+        expect(first_line.config_data).to eq 'host LANHost'
+        expect(first_line.line).to eq 'network-object host LANHost'
+      end
+    end
   end
 
   context '#select_all' do

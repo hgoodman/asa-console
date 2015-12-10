@@ -68,12 +68,12 @@ class ASAConsole
     # @return [String, nil]
     #   the selected line, or `nil` if this is a top-level object
     def line
-      return nil unless @keystr
-      result = ''
-      result << (@negated ? "no #{@keystr}" : @keystr)
-      result << ' ' << @config_name if @config_name && !@config_name.empty?
-      result << ' ' << @config_data if @config_data && !@config_data.empty?
-      result
+      parts = []
+      parts << 'no' if @negated
+      parts << @keystr if @keystr
+      parts << @config_name if @config_name
+      parts << @config_data if @config_data
+      parts.empty? ? nil : parts.join(' ')
     end
 
     # @return [Boolean]
@@ -88,15 +88,15 @@ class ASAConsole
       @nested_config.empty?
     end
 
-    # Select all lines of nested config. Equivalent to {#select} with an empty
-    # string as its only argument.
+    # Select all lines of nested config. Equivalent to {#select} with no
+    # arguments.
     #
     # @yieldparam config [Config]
     # @yieldreturn [nil] if a block is given
     # @return [Array<Config>] if no block given
     def select_all
       result = []
-      select('') do |config|
+      select do |config|
         if block_given?
           yield config
         else
@@ -109,17 +109,14 @@ class ASAConsole
     # Select the first matching line of the nested config or `yield` all
     # matching lines if a block is given.
     #
-    # @param keystr [String]
+    # @param keystr [String, nil]
     # @param config_name [String, nil]
     # @yieldparam config [Config]
     # @yieldreturn [nil] if a block is given
     # @return [Config] if no block given
-    def select(keystr, config_name = nil)
-      if config_name
-        regex = /^(?<no>no )?#{Regexp.escape(keystr)} #{Regexp.escape(config_name)}(?: (?<data>.*))?/
-      else
-        regex = /^(?<no>no )?#{Regexp.escape(keystr)}(?: (?<data>.*))?/
-      end
+    def select(keystr = nil, config_name = nil)
+      prefix = [keystr, config_name].join(' ').strip
+      regex = /^(?<no>no )?#{Regexp.escape(prefix)} ?(?<data>.+)?/
 
       io = StringIO.open(@nested_config)
       lines = io.readlines
