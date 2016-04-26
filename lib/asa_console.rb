@@ -195,7 +195,13 @@ class ASAConsole
   def priv_exec(command)
     must_be_connected!
     enable! if @terminal.prompt =~ EXEC_PROMPT
+    last_prompt = @terminal.prompt
     output = send(command, PRIV_EXEC_PROMPT)
+
+    # A prompt change may indicate a context switch or other event that would
+    # invalidate the config cache.
+    @running_config = {} if @terminal.prompt != last_prompt
+
     error = CMD_ERROR_REGEX.match(output)
     fail Error::CommandError, "Error output after executing '#{command}': #{error[1]}" if error
     output

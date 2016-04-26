@@ -28,10 +28,11 @@ RSpec.describe ASAConsole do
 
   context 'with a fake ssh terminal' do
     before :example do
+      prompt_base = 'fw01/context01/act'
       input_proc = proc do |input, prompt|
         disconnect = false
         if input.nil?
-          prompt = 'TEST> '
+          prompt = prompt_base + '> '
           output = "Type help or '?' for a list of available commands.\n" + prompt
         else
           case input.chomp
@@ -42,7 +43,7 @@ RSpec.describe ASAConsole do
           when 'show version'
             output = "Cisco Adaptive Security Appliance Software Version 7.3(0)\n" + prompt
           when 'configure terminal'
-            output = prompt = 'TEST(config)# '
+            output = prompt = prompt_base + '(config)# '
           when 'terminal width 0'
             output = prompt
           when 'show running-config terminal'
@@ -50,23 +51,27 @@ RSpec.describe ASAConsole do
           when 'show running-config object id NONEXISTENT'
             output = "ERROR: object (NONEXISTENT) does not exist.\n" + prompt
           when 'interface Management0/0'
-            output = prompt = 'TEST(config-if)# '
+            output = prompt = prompt_base + '(config-if)# '
           when 'pod-bay-doors open'
             output = "I'm sorry, Dave. I'm afraid I can't do that.\n" + prompt
           when 'show running-config dhcpd'
             output = prompt
+          when 'changeto context context02'
+            prompt.sub!(prompt_base, 'fw01/context02/act')
+            prompt_base = 'fw01/context02/act'
+            output = prompt
           when 'exit'
-            if prompt == 'TEST(config-if)# '
-              output = prompt = 'TEST(config)# '
-            elsif prompt == 'TEST(config)# '
-              output = prompt = 'TEST# '
+            if prompt == prompt_base + '(config-if)# '
+              output = prompt = prompt_base + '(config)# '
+            elsif prompt == prompt_base + '(config)# '
+              output = prompt = prompt_base + '# '
             else
               output = "\nLogoff\n\n"
               disconnect = true
             end
           else
             if prompt == 'Password: '
-              output = prompt = 'TEST# '
+              output = prompt = prompt_base + '# '
             else
               output = "ERROR: Command not implemented in fake terminal\n" + prompt
             end
@@ -114,6 +119,14 @@ RSpec.describe ASAConsole do
     end
     it 'returns an empty Config object when "show running-config" produces an error' do
       expect(@asa.running_config('object id NONEXISTENT').empty?).to be true
+    end
+    it 'clears the running config cache when the prompt changes after executing a privileged EXEC command' do
+      expect(@asa.running_config('terminal').empty?).to be false
+      expect(@asa.instance_variable_get('@running_config').empty?).to be false
+      expect(@asa.terminal.prompt).to match(/context01/)
+      @asa.priv_exec('changeto context context02')
+      expect(@asa.terminal.prompt).to match(/context02/)
+      expect(@asa.instance_variable_get('@running_config').empty?).to be true
     end
 
     context 'after executing a configuration command' do
