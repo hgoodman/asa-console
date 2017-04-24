@@ -3,7 +3,8 @@ language: ruby
 rvm:
   - '2.2.3'
   - '2.3.4'
-  - 'jruby'
+  - 'jruby-9.0.5.0'
+  - 'jruby-9.1.8.0'
 gemfile:
   - gemfiles/travis.gemfile
 script:
