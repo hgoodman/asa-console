@@ -14,9 +14,7 @@ This gem lets a program interact with a Cisco ASA using CLI commands. It include
 Caveats
 =======
 
-Most people would be better off using [Cisco's official REST API](http://www.cisco.com/c/en/us/td/docs/security/asa/api/qsg-asa-api.html) plugin for the ASA platform. This gem does not use the supported API. It was developed as an academic pursuit and may not be suitable for your environment. It is distributed under the [MIT License](LICENSE.md), which is to say that it comes with no warranty of any kind.
-
-That being said, you might find it useful if you are working with older hardware or if you have other special requirements. The official REST API plugin is only supported on 5500-X, ASAv and newer platforms.
+This gem provides an alternative to installing [Cisco's official REST API](http://www.cisco.com/c/en/us/td/docs/security/asa/api/qsg-asa-api.html) plugin for the ASA platform. You may find it particularly useful if you are working with older hardware or software versions. The official REST API plugin is only supported on 5500-X, ASAv and newer platforms.
 
 For the time being, direct SSH is the only transport method implemented by this gem although it could easily be extended to support alternatives like using a serial console or a jump box.
 
