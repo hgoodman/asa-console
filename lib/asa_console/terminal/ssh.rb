@@ -115,7 +115,7 @@ class ASAConsole
             end
           end
         end
-      rescue Timeout::Error
+      rescue Net::SSH::ConnectionTimeout
         raise Error::ConnectionTimeoutError, "Timeout connecting to #{@host}"
       rescue Net::SSH::AuthenticationFailed
         raise Error::AuthenticationFailure, "Authentication failed for #{@user}@#{@host}"
