@@ -1,8 +1,8 @@
 ---
 language: ruby
 rvm:
-  - '1.9.3'
   - '2.2.3'
+  - '2.3.4'
   - 'jruby'
 gemfile:
   - gemfiles/travis.gemfile

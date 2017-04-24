@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files       = Dir[__FILE__, 'lib/**/*', 'script/*', '*.md', '.yardopts']
   s.executables = ['asatest']
 
-  s.add_runtime_dependency('net-ssh', '~> 2.9.2')
+  s.add_runtime_dependency('net-ssh', '~> 3.0.2')
   s.add_runtime_dependency('highline', '~> 1.7')
 
   s.add_development_dependency('bundler',   '~> 1.7')
@@ -26,5 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('thor',      '~> 0.19')
   s.add_development_dependency('yard',      '~> 0.8')
 
-  s.required_ruby_version = '>=1.9.3'
+  s.required_ruby_version = '>=2.0'
 end
